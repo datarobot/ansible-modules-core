@@ -524,11 +524,12 @@ class DockerManager(object):
                     self.binds[parts[0]] = parts[1]
                 # with bind mode
                 elif len(parts) == 3:
-                    if parts[2] not in ['ro', 'rw']:
+                    if parts[2] not in ["rw", "rw,Z", "rw,z", "z,rw", "Z,rw", "Z", "z", "ro", "ro,Z", "ro,z", "z,ro", "Z,ro"]:
                         self.module.fail_json(msg='bind mode needs to either be "ro" or "rw"')
-                    ro = parts[2] == 'ro'
+
+                    mode = parts[2]
                     self.volumes[parts[1]] = {}
-                    self.binds[parts[0]] = {'bind': parts[1], 'ro': ro}
+                    self.binds[parts[0]] = {'bind': parts[1], 'mode': mode}
                 # docker mount (e.g. /www, mounts a docker volume /www on the container at the same location)
                 else:
                     self.volumes[parts[0]] = {}
@@ -1060,10 +1061,7 @@ class DockerManager(object):
                 for host_path, config in self.binds.iteritems():
                     if isinstance(config, dict):
                         container_path = config['bind']
-                        if config['ro']:
-                            mode = 'ro'
-                        else:
-                            mode = 'rw'
+                        mode = config['mode']
                     else:
                         container_path = config
                         mode = 'rw'
