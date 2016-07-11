@@ -524,7 +524,8 @@ class DockerManager(object):
                     self.binds[parts[0]] = parts[1]
                 # with bind mode
                 elif len(parts) == 3:
-                    if parts[2] not in ["rw", "rw,Z", "rw,z", "z,rw", "Z,rw", "Z", "z", "ro", "ro,Z", "ro,z", "z,ro", "Z,ro"]:
+                    if parts[2] not in ["rw", "rw,Z", "rw,z", "z,rw", "Z,rw", "Z", "z", "ro", "ro,Z", "ro,z", "z,ro", "Z,ro",
+                                        "rwZ", "rwz", "zrw", "Zrw", "roZ", "roz", "zro", "Zro"]:
                         self.module.fail_json(msg='bind mode needs to either be "ro" or "rw"')
 
                     mode = parts[2]
