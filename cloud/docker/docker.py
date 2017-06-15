@@ -865,7 +865,7 @@ class DockerManager(object):
         resource = '%s:%s' % (image, tag)
 
         for image in self.client.images(name=image):
-            if resource in image.get('RepoTags', []):
+            if resource in image.get('RepoTags', []) or []:
                 return image['RepoTags']
         return []
 
